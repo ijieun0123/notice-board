@@ -1,6 +1,7 @@
 package com.example.noticeboard.controller;
 
 import com.example.noticeboard.dto.PostDto;
+import com.example.noticeboard.entity.PostEntity;
 import com.example.noticeboard.service.PostService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -47,6 +48,32 @@ public class PostController {
         PostDto postDto = postService.findById(id); // DTO로 데이터 가져오기
         model.addAttribute("post", postDto);
         return "posts/detail";
+    }
+
+    // 게시글 수정 폼
+    @GetMapping("/{id}/edit")
+    public String edit(@PathVariable Long id, Model model){
+        PostDto postDto = postService.findById(id);
+        model.addAttribute("post", postDto);
+        return "posts/form";
+    }
+
+    // 게시글 수정하기
+    @PostMapping("/{id}")
+    public String update(@PathVariable Long id, @ModelAttribute PostDto postDto) {
+        PostDto existingPost = postService.findById(id); // 기존 게시글 조회
+        existingPost.setTitle(postDto.getTitle());  // DTO에서 값을 가져와 엔티티 업데이트
+        existingPost.setContent(postDto.getContent());
+        existingPost.setAuthor(postDto.getAuthor());
+        postService.save(existingPost);  // 수정된 Dto 저장
+        return "redirect:/posts";
+    }
+
+    // 게시글 삭제하기
+    @PostMapping("/{id}/delete")
+    public String delete(@PathVariable Long id){
+        postService.delete(id);
+        return "redirect:/posts";
     }
 }
 

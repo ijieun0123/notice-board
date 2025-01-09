@@ -37,5 +37,10 @@ public class PostService {
                 .orElseThrow(() -> new RuntimeException("Post not found"));
         return PostDto.fromEntity(postEntity); // 엔티티를 DTO로 변환
     }
+
+    // 게시글 삭제
+    public void delete(Long id){
+        postRepository.deleteById(id);
+    }
 }
 
