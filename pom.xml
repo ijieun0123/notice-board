@@ -72,6 +72,12 @@
             <version>2.1.214</version> <!-- 최신 버전으로 설정하세요 -->
             <scope>runtime</scope>
         </dependency>
+
+        <!-- security -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
     </dependencies>
 
     <build>

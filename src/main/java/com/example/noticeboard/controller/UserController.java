@@ -5,6 +5,9 @@ import com.example.noticeboard.entity.UserEntity;
 import com.example.noticeboard.model.UserModel;
 import com.example.noticeboard.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,8 +19,38 @@ import java.util.Arrays;
 @RequestMapping("/api/users")
 public class UserController {
 
+    private static final Logger logger = LoggerFactory.getLogger(UserController.class);
+
     @Autowired
     private UserService userService;
+
+    // 로그인
+    @PostMapping("/login")
+    public String login(@RequestParam String username, @RequestParam String password, HttpSession session) {
+        logger.debug("Login attempt - Username: {}, Password: {}", username, password);
+
+        boolean isAuthenticated = userService.authenticateUser(username, password);
+
+        if (isAuthenticated) {
+            logger.debug("Login successful, redirecting to /posts");
+            // 로그인 성공 시, 세션에 사용자 정보 저장
+            session.setAttribute("username", username);
+            // 로그인 성공 시, 홈 페이지로 리다이렉트
+            return "redirect:/posts";
+        } else {
+            logger.debug("Login failed, redirecting back to login page with error");
+            // 로그인 실패 시, 로그인 페이지로 다시 리다이렉트
+            return "redirect:/login?error=true";
+        }
+    }
+
+    /**
+     * 로그인 페이지 렌더링
+     */
+    @GetMapping("/login")
+    public String loginPage() {
+        return "posts/login"; // signup.html 페이지를 반환
+    }
 
     /**
      * 회원가입 페이지 렌더링
@@ -26,15 +59,6 @@ public class UserController {
     public String signupPage() {
         return "posts/signup"; // signup.html 페이지를 반환
     }
-
-    // 회원가입 처리 후 사용자 정보 페이지로 리다이렉트 ( HTML 폼 데이터에 적합 )
-//    @PostMapping("/signup")
-//    public String registerUser(@ModelAttribute UserDto userDto) {
-//        System.out.println("UserController/registerUser - Received UserDto: " + userDto);
-//
-//        UserModel userModel = userService.registerUser(userDto);
-//        return "redirect:/api/users/" + userModel.getModelId();  // 회원가입 후 사용자 정보 페이지로 리다이렉트
-//    }
 
     // JSON 데이터 매핑에 적합
     @PostMapping("/signup")
@@ -63,17 +87,6 @@ public class UserController {
     }
 
     /**
-     * 사용자 정보 조회
-     * @param id 사용자 ID
-     * @return 사용자 데이터 (DTO)
-     */
-//    @GetMapping("/{id}")
-//    public UserDto getUserById(@PathVariable Long id) {
-//        UserModel userModel = userService.getUserById(id);
-//        return userService.convertToDto(userModel);
-//    }
-
-    /**
      * 사용자 정보 업데이트
      * @param id 사용자 ID
      * @param userDto 업데이트할 사용자 데이터 (DTO)
@@ -84,11 +97,6 @@ public class UserController {
         UserModel updatedModel = userService.updateUser(id, userDto);
         return userService.convertToDto(updatedModel);
     }
-
-//    @GetMapping("/user/{username}")
-//    public UserEntity getUserByUsername(@PathVariable String username) {
-//        return userRepository.findByUsername(username);
-//    }
 
     /**
      * 사용자 삭제
