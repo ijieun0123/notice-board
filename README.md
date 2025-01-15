@@ -1,7 +1,8 @@
 # 게시판 프로젝트
 이 프로젝트는 Spring Boot와 Thymeleaf를 사용하여 간단한 게시판을 구현하는 예제입니다.<br/>
 사용자는 게시글을 작성, 수정, 삭제할 수 있습니다.<br/>
-데이터베이스는 H2를 사용하고, 게시글은 Post라는 엔티티로 관리됩니다.
+데이터베이스는 H2를 사용하고, 게시글은 Post라는 엔티티로 관리됩니다.<br/>
+로그인 기능은 사용자 인증을 위한 커스텀 로그인 페이지와 Spring Security를 사용하여 구현되었습니다.
 
 <br/>
 
@@ -38,6 +39,8 @@
 * H2 Database: 임베디드 데이터베이스
 * JPA (Java Persistence API): 데이터베이스와의 연동
 * Lombok: 코드 간소화 (Getter, Setter 자동 생성)
+* Spring Security: 커스텀 로그인 페이지
+* SHA-256: 비밀번호 암호화
 
 <br/>
 

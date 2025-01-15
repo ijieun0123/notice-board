@@ -13,6 +13,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import com.example.noticeboard.model.UserModel;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
 import java.util.Arrays;
 
 @Controller
@@ -76,6 +84,7 @@ public class UserController {
 
     /**
      * 사용자 정보 조회
+     *
      * @param id 사용자 ID
      * @return 사용자 데이터 (DTO)
      */
@@ -88,7 +97,8 @@ public class UserController {
 
     /**
      * 사용자 정보 업데이트
-     * @param id 사용자 ID
+     *
+     * @param id      사용자 ID
      * @param userDto 업데이트할 사용자 데이터 (DTO)
      * @return 업데이트된 사용자 데이터 (DTO)
      */
@@ -100,6 +110,7 @@ public class UserController {
 
     /**
      * 사용자 삭제
+     *
      * @param id 사용자 ID
      * @return 성공 메시지
      */
@@ -107,6 +118,6 @@ public class UserController {
     public String deleteUser(@PathVariable Long id) {
         userService.deleteUser(id);
         return "User deleted successfully";
+
     }
 }
-
