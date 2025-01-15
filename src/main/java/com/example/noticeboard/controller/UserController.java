@@ -9,6 +9,8 @@ import jakarta.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -43,6 +45,16 @@ public class UserController {
             logger.debug("Login successful, redirecting to /posts");
             // 로그인 성공 시, 세션에 사용자 정보 저장
             session.setAttribute("username", username);
+
+            // 인증된 사용자의 권한 확인
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            if (authentication != null) {
+                logger.debug("Authenticated User: " + authentication.getName());  // 사용자 이름
+                logger.debug("Authorities: " + authentication.getAuthorities());  // 권한 목록
+            } else {
+                logger.debug("No authentication found");
+            }
+
             // 로그인 성공 시, 홈 페이지로 리다이렉트
             return "redirect:/posts";
         } else {

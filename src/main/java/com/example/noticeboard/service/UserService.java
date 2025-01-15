@@ -8,15 +8,36 @@ import com.example.noticeboard.model.UserModel;
 import com.example.noticeboard.repository.UserRepository;
 import com.example.noticeboard.util.PasswordEncoderUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
 
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+
+
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class UserService {
 
     @Autowired
     private UserRepository userRepository;
+
+    // 권한 확인
+    public boolean hasRole(String role) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null) {
+            for (GrantedAuthority authority : authentication.getAuthorities()) {
+                if (authority.getAuthority().equals("ROLE_" + role)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 
     // 로그인 요청 처리
     public boolean authenticateUser(String username, String password) {
@@ -45,7 +66,11 @@ public class UserService {
         UserEntity userEntity = new UserEntity();
         userEntity.setUsername(userDto.getUsername());
         userEntity.setPassword(encodedPassword);
-        // 필요한 필드들만 설정 (email 제거)
+
+        // 권한 설정 (예: "USER" 권한 부여)
+        Set<String> authorities = new HashSet<>();
+        authorities.add("ROLE_USER");  // "USER" 권한을 String으로 추가
+        userEntity.setAuthorities(authorities);
 
         // 데이터베이스에 저장
         userEntity = userRepository.save(userEntity);

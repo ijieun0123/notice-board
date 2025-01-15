@@ -604,3 +604,12 @@ Caused by: org.h2.mvstore.MVStoreException: The write format 2 is smaller than t
 	at org.h2.mvstore.MVStore$Builder.open(MVStore.java:2035)
 	at org.h2.mvstore.db.Store.<init>(Store.java:133)
 	... 94 more
+2025-01-15 15:43:14.270259+09:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "[*]USERS"; expected "UPDATE"; SQL statement:
+USERS [42001-232]
+2025-01-15 19:15:27.109095+09:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "SHOW [*]FULL COLUMNS FROM USER_ENTITY_AUTHORITIES"; SQL statement:
+SHOW FULL COLUMNS FROM USER_ENTITY_AUTHORITIES [42000-232]
+2025-01-15 19:15:46.513257+09:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "SHOW [*]FULL COLUMNS FROM USER_ENTITY_AUTHORITIES"; SQL statement:
+SHOW FULL COLUMNS FROM USER_ENTITY_AUTHORITIES [42000-232]
