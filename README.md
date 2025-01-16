@@ -101,5 +101,5 @@
 
 ## 블로그
 
-[[프로젝트] [스프링부트] 게시판 - Create / Read](https://velog.io/@cock321/%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-%EC%8A%A4%ED%94%84%EB%A7%81%EB%B6%80%ED%8A%B8-%EA%B2%8C%EC%8B%9C%ED%8C%90)
+[[프로젝트] [스프링부트] 게시판 - Create / Read](https://velog.io/@cock321/%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-%EC%8A%A4%ED%94%84%EB%A7%81%EB%B6%80%ED%8A%B8-%EA%B2%8C%EC%8B%9C%ED%8C%90)<br/>
 [[프로젝트] [스프링부트] 게시판 - 로그인 & 유저 권한 부여](https://velog.io/@cock321/%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-%EC%8A%A4%ED%94%84%EB%A7%81%EB%B6%80%ED%8A%B8-%EA%B2%8C%EC%8B%9C%ED%8C%90-Create-Read)
