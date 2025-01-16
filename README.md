@@ -3,7 +3,8 @@
 이 프로젝트는 Spring Boot와 Thymeleaf를 사용하여 간단한 게시판을 구현하는 예제입니다.<br/>
 사용자는 회원가입 및 로그인을 거쳐 게시글을 작성, 수정, 삭제할 수 있습니다.<br/>
 데이터베이스는 H2를 사용합니다.<br/>
-로그인 기능은 사용자 인증을 위한 커스텀 로그인 페이지와 Spring Security를 사용하여 구현되었습니다.
+로그인 기능은 사용자 인증을 위한 커스텀 로그인 페이지와 Spring Security를 사용하여 구현되었습니다.<br/>
+테스트 코드 또한 작성하였습니다.
 
 <br/>
 
@@ -17,6 +18,11 @@
 * Spring Security: 커스텀 로그인 페이지
 * SHA-256: 비밀번호 암호화
 * Logger : 로그 생성
+* JUnit 5: 테스트 프레임워크
+* Mockito: 의존성 모킹
+* Spring Test: Spring 애플리케이션의 테스트를 위한 도구들 (@WebMvcTest, MockMvc, MockMvcBuilders)
+* Spring Security Test: Spring Security 설정을 적용한 테스트 도구들 (SecurityMockMvcConfigurers, user())
+* Spring Boot Test: Spring Boot 애플리케이션의 통합 테스트 도구들 (@SpringBootTest)
 
 <br/>
 
@@ -88,6 +94,10 @@
 * 게시글 목록: http://localhost:8080/posts
 * 게시글 작성: http://localhost:8080/posts/new
 * 게시글 상세 보기: http://localhost:8080/posts/{id} (예: http://localhost:8080/posts/1)
+
+4. 테스트 코드:
+
+* IDE에서 실행하거나, mvn test 명령어를 사용하여 Maven을 통해 테스트를 실행할 수 있습니다.
 
 <br/>
 
