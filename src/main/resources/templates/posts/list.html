@@ -22,10 +22,16 @@
         <ul>
             <th:block th:each="post : ${posts}">
                 <li class="d-flex text-body-secondary pt-3">
-                    <svg class="bd-placeholder-img flex-shrink-0 me-2 rounded" width="32" height="32" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 32x32" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#007bff"></rect><text x="50%" y="50%" fill="#007bff" dy=".3em">32x32</text></svg>
+                    <svg class="bd-placeholder-img flex-shrink-0 me-2 rounded" width="32" height="32"
+                         xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 32x32"
+                         preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title>
+                        <rect width="100%" height="100%" fill="#007bff"></rect>
+                        <text x="50%" y="50%" fill="#007bff" dy=".3em">32x32</text>
+                    </svg>
                     <div class="pb-3 mb-0 small lh-sm border-bottom w-100">
                         <div class="d-flex justify-content-between">
-                            <a th:href="@{/posts/{id}(id=${post.id})}" th:text="${post.title}" class="text-gray-dark"></a>
+                            <a th:href="@{/posts/{id}(id=${post.id})}" th:text="${post.title}"
+                               class="text-gray-dark"></a>
                             <form th:action="@{/posts/{id}/delete(id=${post.id})}" method="post">
                                 <button class="btn btn-primary btn-sm" type="submit">삭제</button>
                             </form>
@@ -35,21 +41,9 @@
                 </li>
             </th:block>
         </ul>
+        <a href="/api/users/logout">로그아웃</a>
     </div>
 </main>
-
-<!--<h2>게시판</h2>-->
-<!--<p>환영합니다, <span th:text="${username}"></span>님!</p>-->
-
-<!--<ul>-->
-<!--    <th:block th:each="post : ${posts}">-->
-<!--        <li>-->
-<!--            <a th:href="@{/posts/{id}(id=${post.id})}" th:text="${post.title}">게시글 제목</a>-->
-<!--        </li>-->
-<!--    </th:block>-->
-<!--</ul>-->
-
-<!--<a href="/api/users/logout">로그아웃</a>-->
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
