@@ -21,7 +21,16 @@ import java.util.Set;
 public class UserService {
 
     @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
+    private final PasswordEncoderUtil passwordEncoderUtil;
+
+    private final UserEntityModelMapper userEntityModelMapper;
+
+    public UserService(UserRepository userRepository, PasswordEncoderUtil passwordEncoderUtil, UserEntityModelMapper userEntityModelMapper) {
+        this.userRepository = userRepository;
+        this.passwordEncoderUtil = passwordEncoderUtil;
+        this.userEntityModelMapper = userEntityModelMapper;
+    }
 
     // 권한 확인
     public boolean hasRole(String role) {
@@ -38,15 +47,12 @@ public class UserService {
 
     // 로그인 요청 처리
     public boolean authenticateUser(String username, String password) {
-        System.out.println("UserService/authenticateUser - username: " + username);
-        System.out.println("UserService/authenticateUser - password: " + password);
 
         // 사용자 정보 조회
         UserEntity userEntity = userRepository.findByUsername(username);
 
         // 사용자가 존재하고, 비밀번호가 일치하는지 확인
-        if (userEntity != null && PasswordEncoderUtil.matches(password, userEntity.getPassword())) {
-            System.out.println("Password matches: " + PasswordEncoderUtil.matches(password, userEntity.getPassword()));
+        if (userEntity != null && passwordEncoderUtil.matches(password, userEntity.getPassword())) {
             return true;  // 인증 성공
         }
         return false;  // 인증 실패
@@ -57,7 +63,7 @@ public class UserService {
         System.out.println("UserService/registerUser - UserDto: " + userDto);
 
         // 비밀번호 암호화
-        String encodedPassword = PasswordEncoderUtil.encode(userDto.getPassword());
+        String encodedPassword = passwordEncoderUtil.encode(userDto.getPassword());
 
         // UserDto -> UserEntity 변환
         UserEntity userEntity = new UserEntity();
@@ -75,7 +81,7 @@ public class UserService {
         System.out.println("UserService/registerUser - Saved UserEntity: " + userEntity);
 
         // UserEntity -> UserModel 변환 후 반환
-        return UserEntityModelMapper.toModel(userEntity);
+        return userEntityModelMapper.toModel(userEntity);
     }
 
     // 사용자 조회
@@ -85,30 +91,30 @@ public class UserService {
             throw new RuntimeException("User not found");
         }
         UserEntity userEntity = optionalUser.get();
-        return UserEntityModelMapper.toModel(userEntity);
+        return userEntityModelMapper.toModel(userEntity);
     }
 
     // 사용자 업데이트
-    public UserModel updateUser(Long id, UserDto userDto) {
-        Optional<UserEntity> optionalUser = userRepository.findById(id);
-        if (optionalUser.isEmpty()) {
-            throw new RuntimeException("User not found");
-        }
-        UserEntity userEntity = optionalUser.get();
-        userEntity.setUsername(userDto.getUsername());
-        userEntity.setPassword(userDto.getPassword());
-
-        UserEntity updatedEntity = userRepository.save(userEntity);
-        return UserEntityModelMapper.toModel(updatedEntity);
-    }
+//    public UserModel updateUser(Long id, UserDto userDto) {
+//        Optional<UserEntity> optionalUser = userRepository.findById(id);
+//        if (optionalUser.isEmpty()) {
+//            throw new RuntimeException("User not found");
+//        }
+//        UserEntity userEntity = optionalUser.get();
+//        userEntity.setUsername(userDto.getUsername());
+//        userEntity.setPassword(userDto.getPassword());
+//
+//        UserEntity updatedEntity = userRepository.save(userEntity);
+//        return userEntityModelMapper.toModel(updatedEntity);
+//    }
 
     // 사용자 삭제
-    public void deleteUser(Long id) {
-        if (!userRepository.existsById(id)) {
-            throw new RuntimeException("User not found");
-        }
-        userRepository.deleteById(id);
-    }
+//    public void deleteUser(Long id) {
+//        if (!userRepository.existsById(id)) {
+//            throw new RuntimeException("User not found");
+//        }
+//        userRepository.deleteById(id);
+//    }
 
     // UserModel → UserDto 변환
     public UserDto convertToDto(UserModel userModel) {
