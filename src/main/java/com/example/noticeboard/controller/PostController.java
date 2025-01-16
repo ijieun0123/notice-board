@@ -1,14 +1,18 @@
 package com.example.noticeboard.controller;
 
 import com.example.noticeboard.dto.PostDto;
+import com.example.noticeboard.dto.UserDto;
 import com.example.noticeboard.entity.PostEntity;
 import com.example.noticeboard.service.PostService;
+import com.example.noticeboard.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -22,7 +26,6 @@ import java.util.List;
 public class PostController {
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
     private final PostService postService;
-
     public PostController(PostService postService) {
         this.postService = postService;
     }
@@ -30,7 +33,7 @@ public class PostController {
     // 게시글 목록
     @PreAuthorize("hasRole('USER')")
     @GetMapping
-    public String list(Model model) {
+    public String list(@AuthenticationPrincipal User user, Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null) {
             logger.debug("Authenticated User: " + authentication.getName());
@@ -43,6 +46,7 @@ public class PostController {
         if (authentication != null && authentication.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_USER"))) {
             List<PostDto> posts = postService.findAll(); // DTO로 데이터 가져오기
             model.addAttribute("posts", posts);
+            model.addAttribute("username", user.getUsername());
             return "posts/list";// 정상적으로 페이지를 반환
         } else {
             return "redirect:/api/users/login";  // 권한이 없으면 로그인 페이지로 리다이렉트

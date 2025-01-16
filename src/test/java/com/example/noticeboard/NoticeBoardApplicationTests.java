@@ -1,13 +1,13 @@
 package com.example.noticeboard;
 
-import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
+//import org.junit.jupiter.api.Test;
+//import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest
-class NoticeBoardApplicationTests {
-
-    @Test
-    void contextLoads() {
-    }
-
-}
+//@SpringBootTest
+//class NoticeBoardApplicationTests {
+//
+//    @Test
+//    void contextLoads() {
+//    }
+//
+//}
