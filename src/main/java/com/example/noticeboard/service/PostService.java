@@ -3,7 +3,9 @@ package com.example.noticeboard.service;
 import com.example.noticeboard.dto.PostDto;
 import com.example.noticeboard.entity.PostEntity;
 import com.example.noticeboard.repository.PostRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -13,6 +15,7 @@ import java.util.stream.Collectors;
 public class PostService {
     private final PostRepository postRepository;
 
+    @Autowired
     public PostService(PostRepository postRepository) {
         this.postRepository = postRepository;
     }
@@ -39,7 +42,7 @@ public class PostService {
     }
 
     // 게시글 삭제
-    public void delete(Long id){
+    public void delete(Long id) {
         postRepository.deleteById(id);
     }
 }

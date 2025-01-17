@@ -1,111 +1,77 @@
-# 게시판 프로젝트
-이 프로젝트는 Spring Boot와 Thymeleaf를 사용하여 간단한 게시판을 구현하는 예제입니다.<br/>
-사용자는 게시글을 작성, 수정, 삭제할 수 있습니다.<br/>
-데이터베이스는 H2를 사용하고, 게시글은 Post라는 엔티티로 관리됩니다.
+# Notice Board
 
-<br/>
+**Notice Board**는 사용자들이 게시글을 작성, 수정, 삭제할 수 있는 웹 애플리케이션입니다. 이 프로젝트는 Spring Boot와 Thymeleaf를 사용하여 개발되었으며, 사용자 인증 및 권한 관리를
+위해 Spring Security를 통합하였습니다.
 
-## 프로젝트 구조
-    src
-    └── main
-        └── java
-            └── com
-                └── example
-                    └── board
-                        ├── controller
-                        │   └── PostController.java
-                        ├── dto
-                        │   └── PostDto.java
-                        ├── entity
-                        │   └── PostEntity.java
-                        ├── repository
-                        │   └── PostRepository.java
-                        └── service
-                            └── PostService.java
-    └── resources
-        └── templates
-            └── posts
-                ├── form.html
-                ├── list.html
-                └── view.html
-                └── application.properties
+## 주요 기능
 
-<br/>
+- **게시글 목록 조회**: 모든 사용자가 게시글 목록을 볼 수 있습니다.
+- **게시글 작성**: 인증된 사용자는 새로운 게시글을 작성할 수 있습니다.
+- **게시글 수정**: 게시글 작성자는 자신의 게시글을 수정할 수 있습니다.
+- **게시글 삭제**: 게시글 작성자는 자신의 게시글을 삭제할 수 있습니다.
+- **사용자 인증 및 권한 관리**: Spring Security를 사용하여 사용자 인증 및 권한을 관리합니다.
 
 ## 기술 스택
-* Spring Boot: 서버 사이드 프레임워크
-* Thymeleaf: HTML 템플릿 엔진
-* H2 Database: 임베디드 데이터베이스
-* JPA (Java Persistence API): 데이터베이스와의 연동
-* Lombok: 코드 간소화 (Getter, Setter 자동 생성)
 
-<br/>
+- **백엔드**: Java, Spring Boot
+- **프론트엔드**: Thymeleaf, HTML, CSS
+- **데이터베이스**: H2 Database (개발 및 테스트용)
+- **빌드 도구**: Maven
 
-## 기능
-* 게시글 작성
-* 게시글 목록 조회
-* 게시글 상세 조회
-* 게시글 수정
-* 게시글 삭제
+## 설치 및 실행
 
-<br/>
+1. **프로젝트 클론**
 
-## 구성
-1. Entity: 데이터베이스와 매핑되는 객체<br/><br/>
-   데이터베이스와 연결된 객체, 게시글 데이터를 저장.<br/>
-   Post 엔티티는 데이터베이스의 posts 테이블과 매핑되며, 게시글에 대한 정보를 저장합니다.
+   ```bash
+   git clone https://github.com/ijieun0123/notice-board.git
+   cd notice-board
+   ```
 
+2. **필요한 의존성 설치**
 
-2. DTO (Data Transfer Object): 데이터 전송을 위한 객체<br/><br/>
-   클라이언트와 서버 간 데이터 전송을 위한 객체, 필요한 정보만 포함.<br/>
-   DTO는 클라이언트와 서버 간의 데이터 전송을 최적화하는 역할을 합니다.<br/> PostDTO는 클라이언트에게 필요한 게시글의 정보만 전달합니다.
+   Maven을 사용하여 필요한 의존성을 설치합니다.
 
+   ```bash
+   mvn clean install
+   ```
 
-3. Model: 비즈니스 로직을 처리하거나 데이터를 표현하는 객체<br/><br/>
-   화면에 표시할 데이터나 비즈니스 로직을 처리<br/>
-   PostModel은 게시글을 화면에 표시할 때 필요한 데이터를 준비하거나, 비즈니스 로직을 포함할 수 있습니다.<br/> 예를 들어, 게시글 요약을 제공하는 메소드를 추가할 수 있습니다.
+3. **애플리케이션 실행**
 
+   Spring Boot 애플리케이션을 실행합니다.
 
-4. PostService: 비즈니스 로직 처리<br/><br/>
-   비즈니스 로직을 처리, DTO와 엔티티 간 변환.<br/>
-   서비스 계층에서는 PostDTO를 사용하여 클라이언트와 데이터를 주고받고,<br/>PostModel을 통해 필요한 비즈니스 로직을 처리합니다.
+   ```bash
+   mvn spring-boot:run
+   ```
 
+4. **웹 브라우저에서 접속**
 
-5. PostController: 클라이언트 요청 처리<br/><br/>
-   클라이언트 요청을 처리하고, DTO를 사용하여 데이터를 주고받음.<br/>
-   컨트롤러에서는 PostDTO를 사용하여 클라이언트와 데이터를 주고받고,<br/> PostModel을 통해 화면에 표시할 데이터를 준비합니다.
+   브라우저를 열고 [http://localhost:8080](http://localhost:8080)으로 접속합니다.
 
+## 사용 방법
 
-6. PostRepository: 데이터베이스와 상호작용<br/><br/>
-   PostRepository는 JPA를 사용하여 데이터베이스와 상호작용합니다.<br/> Post 엔티티와 매핑되어 CRUD 작업을 처리합니다.
+1. **회원 가입 및 로그인**
 
+    - 회원 가입을 통해 새로운 계정을 생성합니다.
+    - 생성한 계정으로 로그인합니다.
 
-7. HTML 뷰: Thymeleaf 템플릿<br/><br/>
-   list.html (게시글 목록 페이지)<br/>
-   form.html (게시글 작성 폼)<br/>
-   detail.html (게시글 상세 페이지)
+2. **게시글 작성**
 
-<br/>
+    - 로그인 후, '새 글 작성' 버튼을 클릭하여 새로운 게시글을 작성할 수 있습니다.
 
-## 실행 방법
-1. 애플리케이션 실행:
+3. **게시글 수정 및 삭제**
 
-* src/main/java/com/example/board/BoardApplication.java 파일을 실행하여 Spring Boot 애플리케이션을 시작합니다.
-2. H2 콘솔 접속:
+    - 자신의 게시글에는 '수정' 및 '삭제' 버튼이 표시됩니다.
+    - '수정' 버튼을 클릭하여 게시글을 수정할 수 있으며, '삭제' 버튼을 클릭하여 게시글을 삭제할 수 있습니다.
 
-* http://localhost:8080/h2-console에 접속하여 H2 데이터베이스 콘솔을 사용할 수 있습니다.
-* JDBC URL: jdbc:h2:mem:testdb
-* 사용자명: sa
-* 비밀번호: 비워두기
-3. 게시판 사용:
+## 테스트
 
-* 게시글 목록: http://localhost:8080/posts
-* 게시글 작성: http://localhost:8080/posts/new
-* 게시글 상세 보기: http://localhost:8080/posts/{id} (예: http://localhost:8080/posts/1)
+JUnit과 Spring Boot Test를 사용하여 단위 테스트 및 통합 테스트를 작성하였습니다. 테스트를 실행하려면 다음 명령어를 사용하세요.
 
-<br/>
+```bash
+mvn test
+```
 
-## 문제 해결
-* Whitelabel Error Page: 템플릿 파일이 존재하지 않거나 경로가 잘못 설정되었을 경우 발생합니다. 템플릿 파일이 src/main/resources/templates/posts/ 디렉토리에 있는지 확인하세요.
-* Cannot resolve 'content': PostDto나 PostEntity에 content 필드가 없을 경우 발생합니다. 필드가 정의되어 있는지 확인하세요
+## 블로그
 
+[[프로젝트] [스프링부트] 게시판 - Create / Read](https://velog.io/@cock321/%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-%EC%8A%A4%ED%94%84%EB%A7%81%EB%B6%80%ED%8A%B8-%EA%B2%8C%EC%8B%9C%ED%8C%90)<br/>
+[[프로젝트] [스프링부트] 게시판 - 로그인 & 유저 권한 부여](https://velog.io/@cock321/%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-%EC%8A%A4%ED%94%84%EB%A7%81%EB%B6%80%ED%8A%B8-%EA%B2%8C%EC%8B%9C%ED%8C%90-Create-Read)

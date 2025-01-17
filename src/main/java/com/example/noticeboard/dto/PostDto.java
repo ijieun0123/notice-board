@@ -18,6 +18,16 @@ public class PostDto {
     private String content;
     private LocalDateTime createdDate;
 
+    public PostDto() {
+    }
+
+    // 매개변수를 받는 생성자
+    public PostDto(Long id, String title, String content) {
+        this.id = id;
+        this.title = title;
+        this.content = content;
+    }
+
     // 엔티티에서 DTO를 생성하는 메소드
     public static PostDto fromEntity(PostEntity postEntity) {
         PostDto dto = new PostDto();
