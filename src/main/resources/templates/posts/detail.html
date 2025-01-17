@@ -7,16 +7,26 @@
 
 </head>
 <body>
-<div class="px-4 pt-5 my-5 text-center">
+
+<div th:replace="~{header :: header}"></div>
+
+<div class="px-4 pt-5 text-center">
+    <div class="d-flex align-items-center p-3 my-3 text-white bg-purple rounded">
+        <div class="lh-1">
+            <h1 class="h6 mb-0 text-white lh-1">Bootstrap</h1>
+            <small>Since 2011</small>
+        </div>
+    </div>
+
     <h1 class="display-4 fw-bold text-body-emphasis" th:text="${post.title}"></h1>
     <div class="col-lg-6 mx-auto">
         <p class="lead mb-4" th:text="${post.content}"></p>
         <p>작성자: <span th:text="${post.author}">작성자</span></p>
-        <p>작성일: <span th:text="${#strings.substring(post.createdDate, 0, 9)}">2025-01-08</span></p>
+        <p>작성일: <span th:text="${#strings.substring(post.createdAt, 0, 9)}">2025-01-08</span></p>
         <div class="d-grid gap-2 d-sm-flex justify-content-sm-center mb-5">
-            <a th:href="@{/posts/{id}/edit(id=${post.id})}" type="button"
+            <a th:href="@{/api/posts/{id}/edit(id=${post.id})}" type="button"
                class="btn btn-primary btn-lg px-4 me-sm-3">수정</a>
-            <form th:action="@{/posts/{id}/delete(id=${post.id})}" method="post">
+            <form th:action="@{/api/posts/{id}/delete(id=${post.id})}" method="post">
                 <button type="submit" class="btn btn-outline-secondary btn-lg px-4">삭제</button>
             </form>
         </div>

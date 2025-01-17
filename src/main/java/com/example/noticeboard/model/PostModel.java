@@ -12,6 +12,7 @@ import lombok.Setter;
 public class PostModel {
     private Long id; // 게시글 ID
     private String title; // 제목
+    private String author;
     private String summary; // 요약된 내용
 
     // 비즈니스 로직: 게시글 내용 요약
@@ -24,6 +25,7 @@ public class PostModel {
         PostDto dto = new PostDto();
         dto.setId(this.id);
         dto.setTitle(this.title);
+        dto.setAuthor(this.author);
         return dto;
     }
 
@@ -39,6 +41,10 @@ public class PostModel {
         return summary;
     }
 
+    public String getAuthor() {
+        return author;
+    }
+
     public void setId(Long id) {
         this.id = id;
     }
@@ -49,6 +55,10 @@ public class PostModel {
 
     public void setSummary(String summary) {
         this.summary = summary;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
     }
 }
 

@@ -22,14 +22,14 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(authz -> authz
-                        .requestMatchers("/api/users/login", "/api/users/signup", "/h2-console/**", "/posts").permitAll()  // 로그인, 회원가입 페이지와 H2 콘솔 접근 허용
-                        .requestMatchers("/posts/**").hasRole("USER")
+                        .requestMatchers("/api/users/login", "/api/users/signup", "/h2-console/**", "/api/posts").permitAll()  // 로그인, 회원가입 페이지와 H2 콘솔 접근 허용
+                        .requestMatchers("/api/posts/**").hasRole("USER")
                         .anyRequest().authenticated()  // 그 외의 요청은 인증 필요
                 )
                 .formLogin(form -> form
                         .loginPage("/api/users/login")
                         .loginProcessingUrl("/perform_login")
-                        .defaultSuccessUrl("/posts", true)
+                        .defaultSuccessUrl("/api/posts", true)
                         .permitAll()  // 로그인 페이지는 모두 접근 가능
                 )
                 .logout(logout -> logout

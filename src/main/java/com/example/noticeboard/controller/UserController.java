@@ -43,7 +43,7 @@ public class UserController {
             }
 
             // 로그인 성공 시, 홈 페이지로 리다이렉트
-            return "redirect:/posts";
+            return "redirect:/api/posts";
         } else {
             logger.debug("Login failed, redirecting back to login page with error");
             // 로그인 실패 시, 로그인 페이지로 다시 리다이렉트
@@ -56,7 +56,7 @@ public class UserController {
      */
     @GetMapping("/login")
     public String loginPage() {
-        return "posts/login"; // signup.html 페이지를 반환
+        return "users/login"; // signup.html 페이지를 반환
     }
 
     /**
@@ -64,7 +64,7 @@ public class UserController {
      */
     @GetMapping("/signup")
     public String signupPage() {
-        return "posts/signup"; // signup.html 페이지를 반환
+        return "users/signup"; // signup.html 페이지를 반환
     }
 
     // 회원가입
