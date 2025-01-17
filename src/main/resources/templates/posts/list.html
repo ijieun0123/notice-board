@@ -42,17 +42,33 @@
             </th:block>
         </ul>
 
-        <div>
-            <span>Page: <span th:text="${pagedPosts.number + 1}"></span> of<span
-                    th:text="${pagedPosts.totalPages}"></span></span>
-        </div>
+        <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-center">
+                <!-- 이전 페이지 버튼 -->
+                <li class="page-item">
+                    <a class="page-link" th:if="${pagedPosts.hasPrevious()}"
+                       th:href="@{/posts(page=${pagedPosts.number - 1}, size=${pagedPosts.size})}"
+                       aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
 
-        <div>
-            <a th:if="${pagedPosts.hasPrevious()}"
-               th:href="@{/posts(page=${pagedPosts.number - 1}, size=${pagedPosts.size})}">Previous</a>
-            <a th:if="${pagedPosts.hasNext()}"
-               th:href="@{/posts(page=${pagedPosts.number + 1}, size=${pagedPosts.size})}">Next</a>
-        </div>
+                <!-- 페이지 번호들 -->
+                <li class="page-item" th:each="i : ${#numbers.sequence(0, pagedPosts.totalPages - 1)}">
+                    <a class="page-link" th:href="@{/posts(page=${i}, size=${pagedPosts.size})}"
+                       th:text="${i + 1}">1</a>
+                </li>
+
+                <!-- 다음 페이지 버튼 -->
+                <li class="page-item">
+                    <a class="page-link" th:if="${pagedPosts.hasNext()}"
+                       th:href="@{/posts(page=${pagedPosts.number + 1}, size=${pagedPosts.size})}"
+                       aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
 
         <a href="/api/users/logout">로그아웃</a>
     </div>
