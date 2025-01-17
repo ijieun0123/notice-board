@@ -8,6 +8,8 @@
 </head>
 <body>
 
+<div th:replace="~{header :: header}"></div>
+
 <main class="container">
     <div class="d-flex align-items-center p-3 my-3 text-white bg-purple rounded shadow-sm">
         <img class="me-3" src="/docs/5.3/assets/brand/bootstrap-logo-white.svg" alt="" width="48" height="38">
@@ -30,9 +32,9 @@
                     </svg>
                     <div class="pb-3 mb-0 small lh-sm border-bottom w-100">
                         <div class="d-flex justify-content-between">
-                            <a th:href="@{/posts/{id}(id=${post.id})}" th:text="${post.title}"
+                            <a th:href="@{/api/posts/{id}(id=${post.id})}" th:text="${post.title}"
                                class="text-gray-dark"></a>
-                            <form th:action="@{/posts/{id}/delete(id=${post.id})}" method="post">
+                            <form th:action="@{/api/posts/{id}/delete(id=${post.id})}" method="post">
                                 <button class="btn btn-primary btn-sm" type="submit">삭제</button>
                             </form>
                         </div>
@@ -47,7 +49,7 @@
                 <!-- 이전 페이지 버튼 -->
                 <li class="page-item">
                     <a class="page-link" th:if="${pagedPosts.hasPrevious()}"
-                       th:href="@{/posts(page=${pagedPosts.number - 1}, size=${pagedPosts.size})}"
+                       th:href="@{/api/posts(page=${pagedPosts.number - 1}, size=${pagedPosts.size})}"
                        aria-label="Previous">
                         <span aria-hidden="true">&laquo;</span>
                     </a>
@@ -55,14 +57,14 @@
 
                 <!-- 페이지 번호들 -->
                 <li class="page-item" th:each="i : ${#numbers.sequence(0, pagedPosts.totalPages - 1)}">
-                    <a class="page-link" th:href="@{/posts(page=${i}, size=${pagedPosts.size})}"
+                    <a class="page-link" th:href="@{/api/posts(page=${i}, size=${pagedPosts.size})}"
                        th:text="${i + 1}">1</a>
                 </li>
 
                 <!-- 다음 페이지 버튼 -->
                 <li class="page-item">
                     <a class="page-link" th:if="${pagedPosts.hasNext()}"
-                       th:href="@{/posts(page=${pagedPosts.number + 1}, size=${pagedPosts.size})}"
+                       th:href="@{/api/posts(page=${pagedPosts.number + 1}, size=${pagedPosts.size})}"
                        aria-label="Next">
                         <span aria-hidden="true">&raquo;</span>
                     </a>

@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 // PostController는 클라이언트의 요청을 처리하고, PostDto를 사용하여 데이터를 주고받습니다.
 
 @Controller
-@RequestMapping("/posts")
+@RequestMapping("/api/posts")
 public class PostController {
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
     private final PostService postService;
@@ -23,23 +23,6 @@ public class PostController {
     public PostController(PostService postService) {
         this.postService = postService;
     }
-
-    // 게시글 목록
-//    @PreAuthorize("hasRole('USER')")
-//    @GetMapping
-//    public String list(@AuthenticationPrincipal User user, Model model) {
-//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//
-//        // 권한이 "ROLE_USER"인 경우만 접근 가능
-//        if (authentication != null && authentication.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_USER"))) {
-//            List<PostDto> posts = postService.findAll(); // DTO로 데이터 가져오기
-//            model.addAttribute("posts", posts);
-//            model.addAttribute("username", user.getUsername());
-//            return "posts/list";// 정상적으로 페이지를 반환
-//        } else {
-//            return "redirect:/api/users/login";  // 권한이 없으면 로그인 페이지로 리다이렉트
-//        }
-//    }
 
     // 게시글 목록 (페이징 포함)
     @PreAuthorize("hasRole('USER')")
@@ -72,7 +55,7 @@ public class PostController {
     @PostMapping
     public String create(@ModelAttribute PostDto postDto) {
         postService.save(postDto); // DTO를 서비스에 전달하여 저장
-        return "redirect:/posts";
+        return "redirect:/api/posts";
     }
 
     // 게시글 상세보기
@@ -105,7 +88,7 @@ public class PostController {
         existingPost.setContent(postDto.getContent());
         existingPost.setAuthor(postDto.getAuthor());
         postService.save(existingPost);  // 수정된 Dto 저장
-        return "redirect:/posts";
+        return "redirect:/api/posts";
     }
 
     // 게시글 삭제하기
@@ -113,7 +96,7 @@ public class PostController {
     @PostMapping("/{id}/delete")
     public String delete(@PathVariable Long id) {
         postService.delete(id);
-        return "redirect:/posts";
+        return "redirect:/api/posts";
     }
 }
 
