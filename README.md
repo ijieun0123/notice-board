@@ -1,4 +1,4 @@
-### Notice Board
+# Notice Board
 
 **Notice Board**는 사용자들이 게시글을 작성, 수정, 삭제할 수 있는 웹 애플리케이션입니다. 이 프로젝트는 Spring Boot와 Thymeleaf를 사용하여 개발되었으며, 사용자 인증 및 권한 관리를
 위해 Spring Security를 통합하였습니다. 최근 게시글 목록에 **페이징 기능**이 추가되어, 많은 게시글이 있을 때도 효율적으로 목록을 조회할 수 있습니다.
