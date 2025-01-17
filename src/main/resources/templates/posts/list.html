@@ -41,6 +41,19 @@
                 </li>
             </th:block>
         </ul>
+
+        <div>
+            <span>Page: <span th:text="${pagedPosts.number + 1}"></span> of<span
+                    th:text="${pagedPosts.totalPages}"></span></span>
+        </div>
+
+        <div>
+            <a th:if="${pagedPosts.hasPrevious()}"
+               th:href="@{/posts(page=${pagedPosts.number - 1}, size=${pagedPosts.size})}">Previous</a>
+            <a th:if="${pagedPosts.hasNext()}"
+               th:href="@{/posts(page=${pagedPosts.number + 1}, size=${pagedPosts.size})}">Next</a>
+        </div>
+
         <a href="/api/users/logout">로그아웃</a>
     </div>
 </main>

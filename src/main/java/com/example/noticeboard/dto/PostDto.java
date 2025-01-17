@@ -16,7 +16,7 @@ public class PostDto {
     private String title; // 제목
     private String author; // 작성자
     private String content;
-    private LocalDateTime createdDate;
+    private LocalDateTime createdAt;
 
     public PostDto() {
     }
@@ -35,7 +35,7 @@ public class PostDto {
         dto.setTitle(postEntity.getTitle());
         dto.setAuthor(postEntity.getAuthor());
         dto.setContent(postEntity.getContent());
-        dto.setCreatedDate(postEntity.getCreatedDate());
+        dto.setCreatedAt(postEntity.getCreatedAt());
         return dto;
     }
 
@@ -46,7 +46,7 @@ public class PostDto {
         postEntity.setTitle(this.title);
         postEntity.setAuthor(this.author);
         postEntity.setContent(this.content);
-        postEntity.setCreatedDate(this.createdDate);
+        postEntity.setCreatedAt(this.createdAt);
         return postEntity;
     }
 
@@ -66,8 +66,8 @@ public class PostDto {
         return content;
     }
 
-    public LocalDateTime getCreatedDate() {
-        return createdDate;
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
     }
 
     public void setId(Long id) {
@@ -86,8 +86,8 @@ public class PostDto {
         this.content = content;
     }
 
-    public void setCreatedDate(LocalDateTime createdDate) {
-        this.createdDate = createdDate;
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 }
 

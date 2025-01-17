@@ -27,7 +27,7 @@ public class PostEntity {
     private String author; // 작성자
 
     @CreationTimestamp
-    private LocalDateTime createdDate;
+    private LocalDateTime createdAt;
 
     public Long getId() {
         return id;
@@ -45,8 +45,8 @@ public class PostEntity {
         return author;
     }
 
-    public LocalDateTime getCreatedDate() {
-        return createdDate;
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
     }
 
     public void setId(Long id) {
@@ -65,8 +65,8 @@ public class PostEntity {
         this.author = author;
     }
 
-    public void setCreatedDate(LocalDateTime createdDate) {
-        this.createdDate = createdDate;
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 }
 

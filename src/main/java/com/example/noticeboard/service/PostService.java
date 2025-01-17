@@ -4,6 +4,10 @@ import com.example.noticeboard.dto.PostDto;
 import com.example.noticeboard.entity.PostEntity;
 import com.example.noticeboard.repository.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -44,6 +48,13 @@ public class PostService {
     // 게시글 삭제
     public void delete(Long id) {
         postRepository.deleteById(id);
+    }
+
+    // 페이징
+    public Page<PostDto> getPosts(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
+        return postRepository.findAllByOrderByCreatedAtDesc(pageable)
+                .map(PostDto::fromEntity); // 엔티티를 DTO로 변환
     }
 }
 

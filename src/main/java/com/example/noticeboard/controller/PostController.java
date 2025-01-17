@@ -4,17 +4,13 @@ import com.example.noticeboard.dto.PostDto;
 import com.example.noticeboard.service.PostService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 // PostController는 클라이언트의 요청을 처리하고, PostDto를 사용하여 데이터를 주고받습니다.
 
@@ -29,26 +25,38 @@ public class PostController {
     }
 
     // 게시글 목록
+//    @PreAuthorize("hasRole('USER')")
+//    @GetMapping
+//    public String list(@AuthenticationPrincipal User user, Model model) {
+//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//
+//        // 권한이 "ROLE_USER"인 경우만 접근 가능
+//        if (authentication != null && authentication.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_USER"))) {
+//            List<PostDto> posts = postService.findAll(); // DTO로 데이터 가져오기
+//            model.addAttribute("posts", posts);
+//            model.addAttribute("username", user.getUsername());
+//            return "posts/list";// 정상적으로 페이지를 반환
+//        } else {
+//            return "redirect:/api/users/login";  // 권한이 없으면 로그인 페이지로 리다이렉트
+//        }
+//    }
+
+    // 게시글 목록 (페이징 포함)
     @PreAuthorize("hasRole('USER')")
     @GetMapping
-    public String list(@AuthenticationPrincipal User user, Model model) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication != null) {
-            logger.debug("Authenticated User: " + authentication.getName());
-            logger.debug("Authorities: " + authentication.getAuthorities());
-        } else {
-            logger.debug("No authentication found");
-        }
+    public String list(@RequestParam(defaultValue = "0") int page,
+                       @RequestParam(defaultValue = "2") int size,
+                       @AuthenticationPrincipal User user,
+                       Model model) {
+        // 페이징된 게시글 가져오기
+        Page<PostDto> pagedPosts = postService.getPosts(page, size);
 
-        // 권한이 "ROLE_USER"인 경우만 접근 가능
-        if (authentication != null && authentication.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_USER"))) {
-            List<PostDto> posts = postService.findAll(); // DTO로 데이터 가져오기
-            model.addAttribute("posts", posts);
-            model.addAttribute("username", user.getUsername());
-            return "posts/list";// 정상적으로 페이지를 반환
-        } else {
-            return "redirect:/api/users/login";  // 권한이 없으면 로그인 페이지로 리다이렉트
-        }
+        // 모델에 데이터 추가
+        model.addAttribute("posts", pagedPosts.getContent()); // 현재 페이지의 게시글
+        model.addAttribute("pagedPosts", pagedPosts);         // 페이징 정보 포함
+        model.addAttribute("username", user.getUsername());   // 사용자 이름
+
+        return "posts/list"; // 동일한 템플릿 사용
     }
 
     // 게시글 작성 폼
