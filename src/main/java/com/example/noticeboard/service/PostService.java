@@ -50,11 +50,18 @@ public class PostService {
         postRepository.deleteById(id);
     }
 
-    // 페이징
+    // 페이징 ( 서치 x )
     public Page<PostDto> getPosts(int page, int size) {
         Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
         return postRepository.findAllByOrderByCreatedAtDesc(pageable)
                 .map(PostDto::fromEntity); // 엔티티를 DTO로 변환
+    }
+
+    // 페이징 ( 서치 o )
+    public Page<PostDto> searchPosts(String search, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
+        return postRepository.findByTitleContainingOrContentContaining(search, search, pageable)
+                .map(PostDto::fromEntity); // 검색어가 포함된 게시글만 반환
     }
 }
 

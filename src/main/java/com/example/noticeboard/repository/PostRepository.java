@@ -12,4 +12,6 @@ import org.springframework.stereotype.Repository;
 public interface PostRepository extends JpaRepository<PostEntity, Long> {
 
     Page<PostEntity> findAllByOrderByCreatedAtDesc(Pageable pageable);
+
+    Page<PostEntity> findByTitleContainingOrContentContaining(String title, String content, Pageable pageable);
 }

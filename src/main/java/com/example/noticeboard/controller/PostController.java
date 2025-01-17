@@ -24,23 +24,44 @@ public class PostController {
         this.postService = postService;
     }
 
-    // 게시글 목록 (페이징 포함)
+    // 게시글 목록 (페이징 포함 & 서치박스)
     @PreAuthorize("hasRole('USER')")
     @GetMapping
     public String list(@RequestParam(defaultValue = "0") int page,
-                       @RequestParam(defaultValue = "2") int size,
+                       @RequestParam(defaultValue = "10") int size,
+                       @RequestParam(required = false) String search,
                        @AuthenticationPrincipal User user,
                        Model model) {
-        // 페이징된 게시글 가져오기
-        Page<PostDto> pagedPosts = postService.getPosts(page, size);
+        // 검색어가 있을 경우 검색된 게시글을 가져옴
+        Page<PostDto> pagedPosts;
+        if (search != null && !search.isEmpty()) {
+            pagedPosts = postService.searchPosts(search, page, size); // 검색 처리 메소드 호출
+        } else {
+            pagedPosts = postService.getPosts(page, size); // 검색어가 없으면 전체 게시글 가져옴
+        }
 
-        // 모델에 데이터 추가
-        model.addAttribute("posts", pagedPosts.getContent()); // 현재 페이지의 게시글
-        model.addAttribute("pagedPosts", pagedPosts);         // 페이징 정보 포함
-        model.addAttribute("username", user.getUsername());   // 사용자 이름
+        model.addAttribute("posts", pagedPosts.getContent());
+        model.addAttribute("pagedPosts", pagedPosts);
+        model.addAttribute("username", user.getUsername());
 
-        return "posts/list"; // 동일한 템플릿 사용
+        return "posts/list";
     }
+//    @PreAuthorize("hasRole('USER')")
+//    @GetMapping
+//    public String list(@RequestParam(defaultValue = "0") int page,
+//                       @RequestParam(defaultValue = "2") int size,
+//                       @AuthenticationPrincipal User user,
+//                       Model model) {
+//        // 페이징된 게시글 가져오기
+//        Page<PostDto> pagedPosts = postService.getPosts(page, size);
+//
+//        // 모델에 데이터 추가
+//        model.addAttribute("posts", pagedPosts.getContent()); // 현재 페이지의 게시글
+//        model.addAttribute("pagedPosts", pagedPosts);         // 페이징 정보 포함
+//        model.addAttribute("username", user.getUsername());   // 사용자 이름
+//
+//        return "posts/list"; // 동일한 템플릿 사용
+//    }
 
     // 게시글 작성 폼
     @PreAuthorize("hasRole('USER')")
