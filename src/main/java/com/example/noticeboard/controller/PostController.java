@@ -1,10 +1,7 @@
 package com.example.noticeboard.controller;
 
 import com.example.noticeboard.dto.PostDto;
-import com.example.noticeboard.dto.UserDto;
-import com.example.noticeboard.entity.PostEntity;
 import com.example.noticeboard.service.PostService;
-import com.example.noticeboard.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -26,6 +23,7 @@ import java.util.List;
 public class PostController {
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
     private final PostService postService;
+
     public PostController(PostService postService) {
         this.postService = postService;
     }
@@ -74,6 +72,9 @@ public class PostController {
     @GetMapping("/{id}")
     public String view(@PathVariable Long id, Model model) {
         PostDto postDto = postService.findById(id); // DTO로 데이터 가져오기
+        if (postDto == null) {
+            throw new IllegalArgumentException("Post not found for id: " + id);
+        }
         model.addAttribute("post", postDto);
         return "posts/detail";
     }
@@ -81,7 +82,7 @@ public class PostController {
     // 게시글 수정 폼
     @PreAuthorize("hasRole('USER')")
     @GetMapping("/{id}/edit")
-    public String edit(@PathVariable Long id, Model model){
+    public String edit(@PathVariable Long id, Model model) {
         PostDto postDto = postService.findById(id);
         model.addAttribute("post", postDto);
         return "posts/form";
@@ -102,7 +103,7 @@ public class PostController {
     // 게시글 삭제하기
     @PreAuthorize("hasRole('USER')")
     @PostMapping("/{id}/delete")
-    public String delete(@PathVariable Long id){
+    public String delete(@PathVariable Long id) {
         postService.delete(id);
         return "redirect:/posts";
     }
