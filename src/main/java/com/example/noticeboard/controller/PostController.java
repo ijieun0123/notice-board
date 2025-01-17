@@ -45,8 +45,9 @@ public class PostController {
     // 게시글 작성 폼
     @PreAuthorize("hasRole('USER')")
     @GetMapping("/new")
-    public String createForm(Model model) {
+    public String createForm(Model model, @AuthenticationPrincipal User user) {
         model.addAttribute("post", new PostDto()); // 빈 DTO 객체 전달
+        model.addAttribute("username", user.getUsername());
         return "posts/form";
     }
 

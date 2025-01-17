@@ -9,26 +9,43 @@
 </head>
 <body>
 
-<form class="container" th:action="@{${post.id} == null ? '/api/posts' : '/api/posts/' + ${post.id}}" method="post">
-    <div class="mb-3 row">
-        <label for="title" class="col-sm-2 col-form-label">제목 : </label>
-        <div class="col-sm-10">
-            <input type="text" id="title" class="form-control" name="title" th:value="${post.title}" required>
-        </div>
-    </div>
-    <div class="mb-3 row">
-        <label for="author" class="col-sm-2 col-form-label">작성자 : </label>
-        <div class="col-sm-10">
-            <input type="text" id="author" class="form-control-plaintext" name="author" th:value="${post.author}"
-                   readonly>
-        </div>
-    </div>
-    <div class="mb-3">
-        <label for="content" class="form-label">내용 : </label>
-        <textarea id="content" class="form-control" name="content" th:text="${post.content}" required></textarea>
-    </div>
+<div th:replace="~{header :: header}"></div>
 
-    <button type="submit" class="btn btn-primary">저장</button>
+<div class="d-flex align-items-center p-3 my-3 text-white bg-purple rounded shadow-sm">
+    <img class="me-3" src="/docs/5.3/assets/brand/bootstrap-logo-white.svg" alt="" width="48" height="38">
+    <div class="lh-1">
+        <h1 class="h6 mb-0 text-white lh-1">Bootstrap</h1>
+        <small>Since 2011</small>
+    </div>
+</div>
+
+<form class="container" th:action="@{${post.id} == null ? '/api/posts' : '/api/posts/' + ${post.id}}" method="post">
+    <div class="mt-10 p-3 bg-body rounded shadow-sm d-flex flex-column">
+        <div class="mb-3 row">
+            <label for="title" class="col-sm-2 col-form-label">제목 : </label>
+            <div class="col-sm-10">
+                <input type="text" id="title" class="form-control" name="title" th:value="${post.title}" required>
+            </div>
+        </div>
+        <div class="mb-3 row">
+            <label for="author" class="col-sm-2 col-form-label">작성자 : </label>
+            <div class="col-sm-10">
+                <input type="text" id="author" class="form-control-plaintext" name="author"
+                       th:value="${post.author != null ? post.author : username}"
+                       readonly>
+            </div>
+        </div>
+        <div class="mb-3 row">
+            <label for="content" class="col-sm-2 col-form-label">내용 : </label>
+            <div class="col-sm-10">
+                <textarea id="content" class="form-control" style="height:300px;" name="content"
+                          th:text="${post.content}"
+                          required></textarea>
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary align-self-end" style="width:80px;">저장</button>
+    </div>
 </form>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
