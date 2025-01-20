@@ -127,7 +127,7 @@ public class UserController {
         // 데이터베이스에 저장
         userRepository.save(userEntity);
 
-        return "redirect:/api/posts";
+        return "redirect:/api/users/logout";
     }
 
 
