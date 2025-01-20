@@ -59,7 +59,7 @@ public class UserService {
     }
 
     // 회원가입
-    public UserModel registerUser(UserDto userDto) {
+    public UserModel registerUser(UserDto userDto, String profileImagePath) {
         System.out.println("UserService/registerUser - UserDto: " + userDto);
 
         // 비밀번호 암호화
@@ -69,6 +69,9 @@ public class UserService {
         UserEntity userEntity = new UserEntity();
         userEntity.setUsername(userDto.getUsername());
         userEntity.setPassword(encodedPassword);
+
+        // 프로필 이미지 경로 설정
+        userEntity.setProfileImagePath(profileImagePath); // 프로필 이미지 경로 저장
 
         // 권한 설정 (예: "USER" 권한 부여)
         Set<String> authorities = new HashSet<>();
@@ -83,6 +86,7 @@ public class UserService {
         // UserEntity -> UserModel 변환 후 반환
         return userEntityModelMapper.toModel(userEntity);
     }
+
 
     // 사용자 조회
     public UserModel getUserById(Long id) {

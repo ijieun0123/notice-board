@@ -2,13 +2,13 @@ package com.example.noticeboard.service;
 
 import com.example.noticeboard.entity.UserEntity;
 import com.example.noticeboard.repository.UserRepository;
+import com.example.noticeboard.security.CustomUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
@@ -28,12 +28,15 @@ public class CustomUserDetailsService implements UserDetailsService {
         }
 
         // authorities 필드를 SimpleGrantedAuthority로 변환
-        Set<GrantedAuthority> authorities = new HashSet<>();
+        Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
         for (String authority : userEntity.getAuthorities()) {
-            authorities.add(new SimpleGrantedAuthority(authority)); // "ROLE_" 접두사 추가
+            if (!authority.startsWith("ROLE_")) {
+                authority = "ROLE_" + authority;
+            }
+            grantedAuthorities.add(new SimpleGrantedAuthority(authority));
         }
 
-        return new User(userEntity.getUsername(), userEntity.getPassword(), authorities);
+        // CustomUser로 반환
+        return new CustomUser(userEntity.getUsername(), userEntity.getPassword(), grantedAuthorities, userEntity.getProfileImagePath());
     }
-
 }

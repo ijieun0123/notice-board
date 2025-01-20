@@ -12,6 +12,7 @@ public class UserEntityModelMapper {
         model.setModelId(entity.getUserId());
         model.setModelUsername(entity.getUsername());
         model.setModelPassword(entity.getPassword());
+        model.setProfileImagePath(entity.getProfileImagePath());
         return model;
     }
 
@@ -20,6 +21,7 @@ public class UserEntityModelMapper {
         entity.setUserId(model.getModelId());
         entity.setUsername(model.getModelUsername());
         entity.setPassword(model.getModelPassword());
+        entity.setProfileImagePath(model.getProfileImagePath());
         return entity;
     }
 }

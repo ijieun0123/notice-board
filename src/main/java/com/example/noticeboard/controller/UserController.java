@@ -1,8 +1,10 @@
 package com.example.noticeboard.controller;
 
 import com.example.noticeboard.dto.UserDto;
-import com.example.noticeboard.model.UserModel;
+import com.example.noticeboard.entity.UserEntity;
+import com.example.noticeboard.repository.UserRepository;
 import com.example.noticeboard.service.UserService;
+import com.example.noticeboard.util.PasswordEncoderUtil;
 import jakarta.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,6 +13,16 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.UUID;
 
 @Controller
 @RequestMapping("/api/users")
@@ -20,6 +32,13 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+    private final UserRepository userRepository;
+    private final PasswordEncoderUtil passwordEncoderUtil;
+
+    public UserController(UserRepository userRepository, PasswordEncoderUtil passwordEncoderUtil) {
+        this.userRepository = userRepository;
+        this.passwordEncoderUtil = passwordEncoderUtil;
+    }
 
     // 로그인
     @PostMapping("/login")
@@ -67,15 +86,50 @@ public class UserController {
         return "users/signup"; // signup.html 페이지를 반환
     }
 
-    // 회원가입
     @PostMapping("/signup")
     public String registerUser(@ModelAttribute UserDto userDto) {
-        // 사용자 등록 처리
-        UserModel userModel = userService.registerUser(userDto);
+        // 프로필 이미지 파일 처리
+        MultipartFile profileImage = userDto.getProfileImage();
+        String profileImagePath = null; // 프로필 이미지 경로 초기화
 
-        // 사용자 정보 페이지로 리다이렉트 (ID 기반)
-        return "redirect:/api/users/" + userModel.getModelId();
+        if (profileImage != null && !profileImage.isEmpty()) {
+            // 파일 저장 처리 (절대 경로 사용)
+            String fileName = UUID.randomUUID() + "_" + profileImage.getOriginalFilename(); // 고유 파일명 생성
+            try {
+                // 절대 경로로 파일 저장 (예: /home/user/uploads/ 디렉토리)
+                Path path = Paths.get("/Users/ijieun/Desktop/springboot/noticeBoard/src/main/resources/public/uploads/" + fileName); // 절대 경로 지정
+                Files.createDirectories(path.getParent()); // 디렉토리가 없으면 생성
+                Files.copy(profileImage.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
+
+                // 웹에서 접근할 수 있는 경로로 설정 (예: /uploads/ 파일명)
+                profileImagePath = "/uploads/" + fileName; // 절대 경로가 아닌 웹에서 접근 가능한 상대 경로
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        // 비밀번호 암호화
+        String encodedPassword = passwordEncoderUtil.encode(userDto.getPassword());
+
+        // UserDto -> UserEntity 변환
+        UserEntity userEntity = new UserEntity();
+        userEntity.setUsername(userDto.getUsername());
+        userEntity.setPassword(encodedPassword);
+
+        // 프로필 이미지 경로 설정
+        userEntity.setProfileImagePath(profileImagePath);
+
+        // 권한 설정 (예: "USER" 권한 부여)
+        Set<String> authorities = new HashSet<>();
+        authorities.add("ROLE_USER");
+        userEntity.setAuthorities(authorities);
+
+        // 데이터베이스에 저장
+        userRepository.save(userEntity);
+
+        return "redirect:/api/posts";
     }
+
 
 //    /**
 //     * 사용자 정보 조회

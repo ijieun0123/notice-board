@@ -1,7 +1,6 @@
 package com.example.noticeboard.entity;
 
 import jakarta.persistence.*;
-import org.springframework.security.core.GrantedAuthority;
 
 import java.util.Set;
 
@@ -14,6 +13,7 @@ public class UserEntity {
     private Long userId; // 데이터베이스 ID
     private String username; // 사용자명
     private String password; // 비밀번호
+    private String profileImagePath; // 프로필 사진
 
     @ElementCollection(fetch = FetchType.EAGER)
     private Set<String> authorities; // 권한을 String으로 저장하고, SimpleGrantedAuthority로 변환
@@ -49,5 +49,13 @@ public class UserEntity {
 
     public void setAuthorities(Set<String> authorities) {
         this.authorities = authorities;
+    }
+
+    public String getProfileImagePath() {
+        return profileImagePath;
+    }
+
+    public void setProfileImagePath(String profileImagePath) {
+        this.profileImagePath = profileImagePath;
     }
 }

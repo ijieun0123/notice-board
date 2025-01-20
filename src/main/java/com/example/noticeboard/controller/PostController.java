@@ -1,6 +1,7 @@
 package com.example.noticeboard.controller;
 
 import com.example.noticeboard.dto.PostDto;
+import com.example.noticeboard.security.CustomUser;
 import com.example.noticeboard.service.PostService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,8 +31,14 @@ public class PostController {
     public String list(@RequestParam(defaultValue = "0") int page,
                        @RequestParam(defaultValue = "10") int size,
                        @RequestParam(required = false) String search,
-                       @AuthenticationPrincipal User user,
+                       @AuthenticationPrincipal CustomUser user,
                        Model model) {
+
+        // user가 null일 경우 예외 처리
+        if (user == null) {
+            throw new RuntimeException("User is not authenticated");
+        }
+
         // 검색어가 있을 경우 검색된 게시글을 가져옴
         Page<PostDto> pagedPosts;
         if (search != null && !search.isEmpty()) {
@@ -43,9 +50,11 @@ public class PostController {
         model.addAttribute("posts", pagedPosts.getContent());
         model.addAttribute("pagedPosts", pagedPosts);
         model.addAttribute("username", user.getUsername());
+        model.addAttribute("profileImage", user.getProfileImage());
 
         return "posts/list";
     }
+
 //    @PreAuthorize("hasRole('USER')")
 //    @GetMapping
 //    public String list(@RequestParam(defaultValue = "0") int page,

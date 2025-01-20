@@ -61,17 +61,26 @@
         </ul>
     </div>
     <main class="form-signin m-auto" style="width:300px;">
-        <form action="/api/users/signup" method="post">
+        <!-- form 태그에 enctype="multipart/form-data" 추가 -->
+        <form action="/api/users/signup" method="post" enctype="multipart/form-data">
             <input type="hidden" name="_csrf" value="${_csrf.token}"/>
 
             <h1 class="h3 mb-3 fw-normal">Please sign up</h1>
 
+            <!-- 프로필 사진 업로드 필드 추가 -->
             <div class="form-floating">
-                <input type="text" class="form-control" id="username" name="username" placeholder="Username">
+                <input type="file" class="form-control" id="profileImage" name="profileImage" accept="image/*">
+                <label for="profileImage">Profile Image</label>
+            </div>
+
+            <div class="form-floating">
+                <input type="text" class="form-control my-2" id="username" name="username" placeholder="Username"
+                       required>
                 <label for="username">Username</label>
             </div>
             <div class="form-floating">
-                <input type="password" class="form-control my-2" id="password" name="password" placeholder="password">
+                <input type="password" class="form-control my-2" id="password" name="password" placeholder="password"
+                       required>
                 <label for="password">Password</label>
             </div>
 
